@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/followup",
+      "schedule": "0 9 * * 1"
+    }
+  ],
+  "functions": {
+    "src/app/api/audit/estimate/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/sandbox/analyze/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}

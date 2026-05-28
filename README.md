@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Offlyn Enterprise — Vercel Platform Demo
 
-## Getting Started
+Interview-ready rebuild of [offlyn.ai/enterprise](https://www.offlyn.ai/enterprise/) demonstrating every Vercel platform layer.
 
-First, run the development server:
+## Quick start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx vercel link
+npx vercel env pull
+npx vercel --prod
+```
 
-## Learn More
+Or connect the GitHub repo in the Vercel dashboard for automatic preview deployments.
 
-To learn more about Next.js, take a look at the following resources:
+## Mock AI (default)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+No API keys required. Token estimates stream from a mock provider. Flip `useLiveAI` in Edge Config to use AI Gateway + OpenAI/Anthropic.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Vercel layers
 
-## Deploy on Vercel
+See [docs/VERCEL_LAYERS.md](docs/VERCEL_LAYERS.md) for the full map.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Route | Description |
+|-------|-------------|
+| `/` | Enterprise landing + audit request form |
+| `/audit` | Interactive token estimate + sandbox analyzer |
+| `/audit/[id]` | Workflow-generated audit report |
+
+## Environment
+
+Copy `.env.example` to `.env.local`. Optional: Edge Config, Upstash Redis, Blob, AI keys.

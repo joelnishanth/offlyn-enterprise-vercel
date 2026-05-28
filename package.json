@@ -9,9 +9,28 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.81",
+    "@ai-sdk/openai": "^3.0.66",
+    "@ai-sdk/react": "^3.0.195",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@upstash/redis": "^1.38.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "^2.4.0",
+    "@vercel/edge-config": "^1.4.3",
+    "@vercel/kv": "^3.0.0",
+    "@vercel/sandbox": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "ai": "^6.0.193",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.17.0",
     "next": "16.2.6",
+    "next-themes": "^0.4.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0",
+    "workflow": "^4.2.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
