@@ -15,6 +15,12 @@ export function SiteHeader() {
             Workflow
           </Link>
           <Link
+            href="/benchmarks"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Benchmarks
+          </Link>
+          <Link
             href="/architecture"
             className="hidden text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
