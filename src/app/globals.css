@@ -44,3 +44,17 @@ body {
 .glow-border {
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.08);
 }
+
+@keyframes flow-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.flow-line-animated {
+  animation: flow-pulse 2s ease-in-out infinite;
+}
