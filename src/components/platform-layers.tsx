@@ -14,10 +14,20 @@ const layers = [
   { name: "Rolling Releases", path: "vercel.json", status: "configure" },
 ];
 
+import Link from "next/link";
+
 export function PlatformLayers() {
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <h3 className="mb-4 text-lg font-semibold">Vercel layers in this demo</h3>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h3 className="text-lg font-semibold">Vercel layers in this demo</h3>
+        <Link
+          href="/architecture"
+          className="text-sm text-accent hover:underline"
+        >
+          Full map →
+        </Link>
+      </div>
       <ul className="grid gap-2 text-sm sm:grid-cols-2">
         {layers.map((l) => (
           <li
