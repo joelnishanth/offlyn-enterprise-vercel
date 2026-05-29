@@ -38,7 +38,13 @@ export const pages: ArchRow[] = [
     name: "/architecture",
     file: "app/architecture/page.tsx",
     vercel: "RSC (static)",
-    flow: "This reference page",
+    flow: "Vercel layer reference",
+  },
+  {
+    name: "/workflow",
+    file: "app/workflow/page.tsx",
+    vercel: "RSC + Client",
+    flow: "Audit layer → device SLM story",
   },
   {
     name: "layout",
@@ -123,6 +129,12 @@ export const components: ArchRow[] = [
     file: "components/architecture/architecture-view.tsx",
     vercel: "RSC",
     flow: "/architecture",
+  },
+  {
+    name: "EnterpriseWorkflow",
+    file: "components/workflow/enterprise-workflow.tsx",
+    vercel: "Client (phase tabs)",
+    flow: "/workflow — audit → SLM story",
   },
   {
     name: "PlatformLayers",

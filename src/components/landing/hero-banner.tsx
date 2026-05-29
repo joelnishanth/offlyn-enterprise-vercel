@@ -36,6 +36,12 @@ export async function HeroBanner() {
             {hero.primaryCta}
           </a>
           <Link
+            href="/workflow"
+            className="rounded-lg border border-border px-6 py-3 font-medium transition-colors hover:bg-muted"
+          >
+            See the workflow
+          </Link>
+          <Link
             href="/audit"
             className="rounded-lg border border-border px-6 py-3 font-medium transition-colors hover:bg-muted"
           >

@@ -9,8 +9,14 @@ export function SiteHeader() {
         </Link>
         <nav className="flex items-center gap-4 text-sm">
           <Link
-            href="/architecture"
+            href="/workflow"
             className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Workflow
+          </Link>
+          <Link
+            href="/architecture"
+            className="hidden text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             Architecture
           </Link>
