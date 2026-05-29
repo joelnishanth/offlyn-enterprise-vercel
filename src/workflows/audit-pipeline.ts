@@ -11,17 +11,10 @@ export type AuditPipelineInput = {
 export async function runAuditPipeline(input: AuditPipelineInput) {
   "use workflow";
 
-  await markProcessing(input.auditId);
   const report = await analyzeWorkflow(input);
   await persistReport(input.auditId, report);
 
   return { auditId: input.auditId, status: "complete" as const, report };
-}
-
-async function markProcessing(auditId: string) {
-  "use step";
-
-  await updateAuditRecord(auditId, { status: "processing" });
 }
 
 async function analyzeWorkflow(input: AuditPipelineInput) {

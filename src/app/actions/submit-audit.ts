@@ -4,12 +4,7 @@ import { z } from "zod";
 import { start } from "workflow/api";
 import { uploadAuditAttachment } from "@/lib/blob";
 import { buildAuditReport } from "@/lib/audit-report";
-import {
-  checkRateLimit,
-  saveAuditRecord,
-  updateAuditRecord,
-  type AuditRecord,
-} from "@/lib/kv";
+import { checkRateLimit, saveAuditRecord, type AuditRecord } from "@/lib/kv";
 import { runAuditPipeline } from "@/workflows/audit-pipeline";
 
 const auditSchema = z.object({
@@ -60,12 +55,15 @@ export async function submitAudit(
   }
 
   const auditId = crypto.randomUUID();
+  const report = buildAuditReport(parsed.data.workflow, parsed.data.description);
+
   const record: AuditRecord = {
     id: auditId,
     ...parsed.data,
     notifyMcp: parsed.data.notifyMcp ?? false,
     createdAt: new Date().toISOString(),
-    status: "pending",
+    status: "complete",
+    report,
   };
 
   const attachment = formData.get("attachment");
@@ -75,21 +73,21 @@ export async function submitAudit(
 
   await saveAuditRecord(record);
 
-  // Complete report immediately so the audit page works without Workflow + Redis.
-  // Workflow still runs in the background when the runtime is available (durable replay demo).
-  const report = buildAuditReport(parsed.data.workflow, parsed.data.description);
-  await updateAuditRecord(auditId, { status: "complete", report });
-
-  try {
-    await start(runAuditPipeline, [
-      {
-        auditId,
-        workflow: parsed.data.workflow,
-        description: parsed.data.description,
-      },
-    ]);
-  } catch (error) {
-    console.warn("[submitAudit] Workflow start skipped:", error);
+  // Workflow demo (optional): only when Redis is configured so steps share storage.
+  const hasSharedStorage =
+    process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  if (hasSharedStorage) {
+    try {
+      await start(runAuditPipeline, [
+        {
+          auditId,
+          workflow: parsed.data.workflow,
+          description: parsed.data.description,
+        },
+      ]);
+    } catch (error) {
+      console.warn("[submitAudit] Workflow start skipped:", error);
+    }
   }
 
   return {
