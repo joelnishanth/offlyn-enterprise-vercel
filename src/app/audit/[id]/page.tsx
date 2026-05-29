@@ -42,17 +42,39 @@ async function AuditResultContent({
         <span className="font-medium text-foreground">{record.status}</span>
       </p>
 
+      <section className="mt-8 rounded-xl border border-border bg-card p-6">
+        <h2 className="font-semibold">Your submission</h2>
+        <dl className="mt-4 space-y-3 text-sm">
+          <Row label="Name" value={record.name} />
+          <Row label="Email" value={record.email} />
+          <Row label="Company" value={record.company} />
+          <Row label="Workflow" value={record.workflow} />
+          <Row label="Submitted" value={new Date(record.createdAt).toLocaleString()} />
+          {record.notifyMcp && (
+            <Row label="MCP waitlist" value="Yes — notify when Token Audit MCP opens" />
+          )}
+        </dl>
+        <div className="mt-4">
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Use-case description
+          </p>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+            {record.description}
+          </p>
+        </div>
+      </section>
+
       {record.status === "pending" || record.status === "processing" ? (
-        <div className="mt-8 rounded-xl border border-border bg-card p-8 text-center">
+        <div className="mt-6 rounded-xl border border-border bg-card p-8 text-center">
           <p className="text-muted-foreground">
-            Workflow pipeline is running. Refresh in a few seconds.
+            Workflow pipeline is running. Refresh this page in a few seconds.
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Powered by Workflow SDK durable execution
+            If this stays pending, submit a new audit — reports now complete on submit.
           </p>
         </div>
       ) : record.report ? (
-        <div className="mt-8 space-y-6">
+        <div className="mt-6 space-y-6">
           <Metric
             label="Token waste score"
             value={`${record.report.wasteScore}/100`}
@@ -79,9 +101,18 @@ async function AuditResultContent({
           </div>
         </div>
       ) : (
-        <p className="mt-8 text-muted-foreground">No report available yet.</p>
+        <p className="mt-6 text-muted-foreground">No report available yet.</p>
       )}
     </main>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="font-medium text-foreground">{value}</dd>
+    </div>
   );
 }
 

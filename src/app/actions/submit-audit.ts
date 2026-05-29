@@ -3,7 +3,13 @@
 import { z } from "zod";
 import { start } from "workflow/api";
 import { uploadAuditAttachment } from "@/lib/blob";
-import { checkRateLimit, saveAuditRecord, type AuditRecord } from "@/lib/kv";
+import { buildAuditReport } from "@/lib/audit-report";
+import {
+  checkRateLimit,
+  saveAuditRecord,
+  updateAuditRecord,
+  type AuditRecord,
+} from "@/lib/kv";
 import { runAuditPipeline } from "@/workflows/audit-pipeline";
 
 const auditSchema = z.object({
@@ -69,13 +75,22 @@ export async function submitAudit(
 
   await saveAuditRecord(record);
 
-  await start(runAuditPipeline, [
-    {
-      auditId,
-      workflow: parsed.data.workflow,
-      description: parsed.data.description,
-    },
-  ]);
+  // Complete report immediately so the audit page works without Workflow + Redis.
+  // Workflow still runs in the background when the runtime is available (durable replay demo).
+  const report = buildAuditReport(parsed.data.workflow, parsed.data.description);
+  await updateAuditRecord(auditId, { status: "complete", report });
+
+  try {
+    await start(runAuditPipeline, [
+      {
+        auditId,
+        workflow: parsed.data.workflow,
+        description: parsed.data.description,
+      },
+    ]);
+  } catch (error) {
+    console.warn("[submitAudit] Workflow start skipped:", error);
+  }
 
   return {
     ok: true,
